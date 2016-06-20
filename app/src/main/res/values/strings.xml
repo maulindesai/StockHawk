@@ -40,4 +40,5 @@
 
     <string name="date_picker_dialog" translatable="false">datePicker</string>
     <string name="stock_alredy_saved">This stock is already saved!</string>
+    <string name="log_error_message" translatable="false">Error applying batch insert</string>
 </resources>

@@ -143,7 +143,7 @@ public class StockTaskService extends GcmTaskService{
             result=NO_STOCK_SYMBOL_FOUND;
           }
         }catch (RemoteException | OperationApplicationException e){
-          Log.e(LOG_TAG, "Error applying batch insert", e);
+          Log.e(LOG_TAG, getString(R.string.log_error_message), e);
         }
       } catch (IOException e){
         e.printStackTrace();

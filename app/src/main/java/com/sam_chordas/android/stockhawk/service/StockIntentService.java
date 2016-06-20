@@ -50,7 +50,7 @@ public class StockIntentService extends IntentService {
   void sendBroadCast(Context context, int message) {
     LocalBroadcastManager broadcastManager=LocalBroadcastManager.getInstance(context);
     Intent intent=new Intent(StockIntentAction);
-    intent.putExtra("message",message);
+    intent.putExtra(getString(R.string.message_tag),message);
     broadcastManager.sendBroadcast(intent);
   }
 }
