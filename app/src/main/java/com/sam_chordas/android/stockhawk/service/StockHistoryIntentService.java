@@ -6,6 +6,7 @@ import android.content.Context;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.sam_chordas.android.stockhawk.R;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -84,7 +85,6 @@ public class StockHistoryIntentService extends IntentService {
     }
 
     private void handleActionFetchHistory(String stockSymbol, String startDate, String endDate) throws UnsupportedEncodingException {
-        Log.d(TAG,startDate+" end date "+endDate);
         StringBuilder stringBuilder=new StringBuilder();
         stringBuilder.append("https://query.yahooapis.com/v1/public/yql?q=");
         stringBuilder.append("select * from yahoo.finance.historicaldata where symbol in (")
@@ -114,7 +114,7 @@ public class StockHistoryIntentService extends IntentService {
     void sendBroadCast(Context context,String message) {
         LocalBroadcastManager broadcastManager=LocalBroadcastManager.getInstance(context);
         Intent intent=new Intent(HistoryIntentAction);
-        intent.putExtra("message",message);
+        intent.putExtra(getString(R.string.message_tag),message);
         broadcastManager.sendBroadcast(intent);
     }
 }

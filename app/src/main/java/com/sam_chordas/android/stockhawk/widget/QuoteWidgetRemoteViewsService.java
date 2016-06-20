@@ -64,7 +64,7 @@ public class QuoteWidgetRemoteViewsService extends RemoteViewsService {
         @Override
         public RemoteViews getViewAt(int position) {
             // Get the data for this position from the content provider
-            String symbolName = "Unknown Symbol";
+            String symbolName = getString(R.string.unknown_symbol);
             String Change = "";
             if (mCursor.moveToPosition(position)) {
                 final int symbolIndex = mCursor.getColumnIndex(QuoteColumns.SYMBOL);

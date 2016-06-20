@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -39,15 +38,14 @@ public class StockHistoryActivity extends AppCompatActivity implements View.OnCl
     private Button mEndDate;
     private LineChartView lineChartView;
     private BroadcastReceiver mBroadCastReceiver;
-    private Button mButtonGo;
     private String quote_symbol;
    // private Tooltip mToolTip;
 
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString("Start-DATE",mStartDate.getText().toString());
-        outState.putString("End-DATE",mEndDate.getText().toString());
+        outState.putString(getString(R.string.start_date_tag),mStartDate.getText().toString());
+        outState.putString(getString(R.string.end_date_tag),mEndDate.getText().toString());
         super.onSaveInstanceState(outState);
     }
 
@@ -60,7 +58,7 @@ public class StockHistoryActivity extends AppCompatActivity implements View.OnCl
         // mToolTip=new Tooltip(this,R.layout.stock_tool_tip,R.id.symbol_name);
         mStartDate = (Button) findViewById(R.id.start_date);
         mEndDate = (Button) findViewById(R.id.end_date);
-        mButtonGo= (Button) findViewById(R.id.btn_go);
+        Button mButtonGo = (Button) findViewById(R.id.btn_go);
 
         quote_symbol= getIntent().getExtras().getString(EXTRA_SYMBOL_NAME);
 
@@ -72,11 +70,11 @@ public class StockHistoryActivity extends AppCompatActivity implements View.OnCl
         Date previousDate=calendar.getTime();
 
         if(savedInstanceState==null) {
-            mStartDate.setText(parseDate(currentDate, "yyyy-MM-dd"));
-            mEndDate.setText(parseDate(previousDate, "yyyy-MM-dd"));
+            mStartDate.setText(parseDate(currentDate, getString(R.string.date_format)));
+            mEndDate.setText(parseDate(previousDate, getString(R.string.date_format)));
         } else {
-            mStartDate.setText(savedInstanceState.getString("Start-DATE"));
-            mEndDate.setText(savedInstanceState.getString("End-DATE"));
+            mStartDate.setText(savedInstanceState.getString(getString(R.string.start_date_tag)));
+            mEndDate.setText(savedInstanceState.getString(getString(R.string.date_format)));
         }
 
         //set click listener to open dialog fragment
@@ -96,7 +94,7 @@ public class StockHistoryActivity extends AppCompatActivity implements View.OnCl
         mBroadCastReceiver=new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                String message=intent.getExtras().getString("message");
+                String message=intent.getExtras().getString(getString(R.string.message_tag));
                 List<HistoryBean> beans=parseMessage(message);
                 if(beans!=null) {
                     LineSet lineSet = new LineSet();
@@ -133,21 +131,21 @@ public class StockHistoryActivity extends AppCompatActivity implements View.OnCl
         ArrayList<HistoryBean> historyBeanArrayList=new ArrayList<>();
         try {
             JSONObject jsonObject=new JSONObject(message);
-            JSONObject query=jsonObject.getJSONObject("query");
-            int count=query.getInt("count");
+            JSONObject query=jsonObject.getJSONObject(getString(R.string.query_json));
+            int count=query.getInt(getString(R.string.count_json));
             if(count==0) {
                 return null;
             } else {
-                JSONObject results=query.getJSONObject("results");
-                JSONArray quotes=results.getJSONArray("quote");
+                JSONObject results=query.getJSONObject(getString(R.string.results_json));
+                JSONArray quotes=results.getJSONArray(getString(R.string.quote_json));
                 for(int i=0;i<quotes.length();i++) {
                     HistoryBean historyBean=new HistoryBean();
-                    String symbol = quotes.getJSONObject(i).getString("Symbol");
-                    String date = quotes.getJSONObject(i).getString("Date");
-                    String open = quotes.getJSONObject(i).getString("Open");
-                    String high = quotes.getJSONObject(i).getString("High");
-                    String low = quotes.getJSONObject(i).getString("Low");
-                    String close = quotes.getJSONObject(i).getString("Close");
+                    String symbol = quotes.getJSONObject(i).getString(getString(R.string.symbol_json));
+                    String date = quotes.getJSONObject(i).getString(getString(R.string.date_json));
+                    String open = quotes.getJSONObject(i).getString(getString(R.string.open_json));
+                    String high = quotes.getJSONObject(i).getString(getString(R.string.high_json));
+                    String low = quotes.getJSONObject(i).getString(getString(R.string.lowP_json));
+                    String close = quotes.getJSONObject(i).getString(getString(R.string.close_json));
 
                     historyBean.setSymbol(symbol);
                     historyBean.setOpen(Float.parseFloat(open));
@@ -176,11 +174,11 @@ public class StockHistoryActivity extends AppCompatActivity implements View.OnCl
         switch (v.getId()) {
             case R.id.start_date:
                 DatePickerFragment datePickerFragment=DatePickerFragment.newInstance(true);
-                datePickerFragment.show(getSupportFragmentManager(),"datePicker");
+                datePickerFragment.show(getSupportFragmentManager(),getString(R.string.date_picker_dialog));
                 break;
             case R.id.end_date:
                 datePickerFragment=DatePickerFragment.newInstance(false);
-                datePickerFragment.show(getSupportFragmentManager(),"datePicker");
+                datePickerFragment.show(getSupportFragmentManager(),getString(R.string.date_picker_dialog));
                 break;
             case R.id.btn_go:
                 StockHistoryIntentService.startActionFetchHistory(this,mStartDate.getText().toString()
@@ -198,9 +196,9 @@ public class StockHistoryActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onDateChangeListener(long date,boolean isStartDate) {
         if(isStartDate) {
-            mStartDate.setText(parseDate(new Date(date),"yyyy-MM-dd"));
+            mStartDate.setText(parseDate(new Date(date),getString(R.string.date_format)));
         } else {
-            mEndDate.setText(parseDate(new Date(date),"yyyy-MM-dd"));
+            mEndDate.setText(parseDate(new Date(date),getString(R.string.date_format)));
         }
     }
 }

@@ -26,7 +26,6 @@ public class QuoteWidgetProvider1 extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         final String action = intent.getAction();
-        Log.d("recive ","receive"+action);
         super.onReceive(context, intent);
     }
 
