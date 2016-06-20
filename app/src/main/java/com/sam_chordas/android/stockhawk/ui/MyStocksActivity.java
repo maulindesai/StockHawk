@@ -124,7 +124,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                       new String[] { input.toString() }, null);
                   if (c.getCount() != 0) {
                     Toast toast =
-                        Toast.makeText(MyStocksActivity.this, "This stock is already saved!",
+                        Toast.makeText(MyStocksActivity.this, getString(R.string.stock_alredy_saved),
                             Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, Gravity.CENTER, 0);
                     toast.show();
@@ -195,7 +195,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     mBroadCastReceiver=new BroadcastReceiver() {
       @Override
       public void onReceive(Context context, Intent intent) {
-        int status=intent.getExtras().getInt("message");
+        int status=intent.getExtras().getInt(getString(R.string.message_tag));
         if(status==StockTaskService.NO_STOCK_SYMBOL_FOUND) {
           Snackbar.make(recyclerView,R.string.ticker_symbol_not_found,Snackbar.LENGTH_LONG).show();
         }

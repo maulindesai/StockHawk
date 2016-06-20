@@ -39,4 +39,5 @@
     <string name="close_json" translatable="false">Close</string>
 
     <string name="date_picker_dialog" translatable="false">datePicker</string>
+    <string name="stock_alredy_saved">This stock is already saved!</string>
 </resources>
